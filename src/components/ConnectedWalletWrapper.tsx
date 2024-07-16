@@ -23,9 +23,6 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
     // based of txMode, call the appropriate deposit or withdraw fxn of the contract
   };
 
-  const handleSetMaxBal = () => {};
-  // a function that handles setting available max balance as tx amount
-  // same fxn would be used for wrap and unwrap tx. Ref respective balances based on nature of tx and then include cost for gas fee. ...
   return (
     <form
       onSubmit={handleTxSubmission}
@@ -48,6 +45,10 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
           className="px-3 py-1 cursor-pointer border border-gray-400 rounded-xl"
           type="button"
           value="Set Max"
+          onClick={() => {
+            const availableBal = +balance;
+            setTxAmount(availableBal.toFixed(4));
+          }}
         />
       </fieldset>
 
