@@ -1,6 +1,7 @@
 import { FormEvent, ReactElement, useEffect, useState } from "react";
 import { TTxMode } from "../App";
 import { useBalance, useAccount } from "wagmi";
+import useCustomBalance from "../hooks/useCustomBalance";
 
 type TProp = {
   children?: ReactElement;
@@ -8,10 +9,14 @@ type TProp = {
 };
 
 const ConnectedWalletWrapper = ({ txMode }: TProp) => {
-  const [txAmount, setTxAmount] = useState("0");
+  const [txAmount, setTxAmount] = useState("");
+
+  const { balance } = useCustomBalance();
 
   const handleTxSubmission = (e: FormEvent) => {
     e.preventDefault();
+
+    // execute function body only when txAmount <= wallet balance && > 0
 
     // validate entered tx amount and notify user accordingly when error!
 
@@ -28,10 +33,16 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
     >
       <fieldset className="flex h-1/3 w-4/5 mx-auto justify-around items-center gap-2 ">
         <input
-          className="border border-red-600 px-3 py-1 rounded-xl"
+          className="block text-black w-full border border-red-600 px-3 py-1 rounded-xl"
           type="number"
+          placeholder="00.00"
+          min={0}
+          // max should be same as wallet bal
+          max={balance}
+          step={"any"}
           value={txAmount}
           onChange={(e) => setTxAmount(e.target.value)}
+          required
         />
         <input
           className="px-3 py-1 cursor-pointer border border-gray-400 rounded-xl"
