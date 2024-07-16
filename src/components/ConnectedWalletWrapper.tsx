@@ -8,7 +8,7 @@ type TProp = {
   txMode: TTxMode;
 };
 
-const ConnectedWalletWrapper = ({ txMode }: TProp) => {
+const ConnectedWalletWrapper = ({}: TProp) => {
   const [txAmount, setTxAmount] = useState("");
 
   const { balance } = useCustomBalance();
