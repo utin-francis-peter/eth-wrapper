@@ -66,7 +66,7 @@ function App() {
           </div>
 
           <footer className="px-3">
-            <i>
+            <i className="block text-center">
               Built by{" "}
               <span className="text-gray-200 hover:text-white transition-colors ease-in">
                 utin-francis-peter
