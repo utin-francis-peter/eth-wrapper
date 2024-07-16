@@ -13,12 +13,12 @@ function App() {
   const { balance } = useCustomBalance();
 
   return (
-    <div className="app flex items-center justify-center w-[80%] max-w-5xl mx-auto  min-h-screen">
-      <div className="h-[400px] flex gap-5 flex-col justify-between w-[70%] border-2 border-red-500">
-        <header className="flex justify-between items-center px-3 border-2 border-red-500">
+    <div className="app flex items-center justify-center w-[50vw] max-w-5xl mx-auto  min-h-[70vh] shadow-2xl outline-none border-none bg-transparent">
+      <div className="h-[400px] flex gap-5 flex-col justify-between w-[90%] ">
+        <header className="flex justify-between items-center px-3 ">
           <div>
             {isConnected && (
-              <h2 className="shadow-lg px-4 py-2 rounded-md bg-white">
+              <h2 className="text-black shadow-lg px-4 py-2 rounded-md bg-white">
                 {txMode === "WRAP" ? "SEP" : "WSEP"} Bal: {balance}
               </h2>
             )}
@@ -29,23 +29,21 @@ function App() {
           </div>
         </header>
 
-        <main className="flex-1 flex flex-col gap-5">
-          <div className="flex-1 flex flex-col border-2 border-gray-600 w-[90%] mx-auto py-2">
-            {/* <h1 className="text-center font-extrabold mb-3">{txMode} SEP</h1> */}
-
-            <div className="border-2 flex-1 flex flex-col items-center justify-center gap-4 border-blue-700">
-              <div className="flex justify-center gap-3 border border-blue-600">
+        <main className="flex-1 flex flex-col gap-5 ">
+          <div className="border shadow-lg rounded-md flex-1 flex flex-col w-[90%] mx-auto">
+            <div className="flex-1 flex flex-col items-center justify-center gap-4 ">
+              <div className="flex justify-center gap-3">
                 <button
                   className={`px-4 py-2  rounded-[12px] ${
-                    txMode === "WRAP" ? "bg-gray-400" : ""
+                    txMode === "WRAP" ? "border-2 border-white" : ""
                   }`}
                   onClick={() => setTxMode("WRAP")}
                 >
                   Wrap SEP
                 </button>
                 <button
-                  className={`px-4 py-2 border border-gray-600 rounded-[12px] ${
-                    txMode === "UNWRAP" ? "bg-gray-400" : ""
+                  className={`px-4 py-2 e rounded-[12px] ${
+                    txMode === "UNWRAP" ? "border-2 border-white" : ""
                   }`}
                   onClick={() => setTxMode("UNWRAP")}
                 >
@@ -67,8 +65,13 @@ function App() {
             </div>
           </div>
 
-          <footer>
-            <i>Built by utin-francis-peter</i>
+          <footer className="px-3">
+            <i>
+              Built by{" "}
+              <span className="text-gray-200 hover:text-white transition-colors ease-in">
+                utin-francis-peter
+              </span>
+            </i>
           </footer>
         </main>
       </div>

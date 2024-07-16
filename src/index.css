@@ -3,14 +3,35 @@
 @tailwind utilities;
 
 body {
-  background: rgb(28, 28, 40);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #faf6f6;
+}
+.app {
+}
+body {
+  /* background: rgb(28, 28, 40); */
+  background: radial-gradient(
+    circle,
+    rgb(236, 102, 255, 1) 0%,
+    rgba(28, 28, 40, 1) 100%
+  );
 }
 
-.app {
-  background: rgb(34, 193, 195);
+/* body {
+  background: radial-gradient(
+    circle,
+    rgb(236, 102, 255, 1) 0%,
+    rgba(28, 28, 40, 1) 100%
+  );
+} */
+
+/* .app {
   background: radial-gradient(
     circle,
     rgba(34, 193, 195, 1) 0%,
     rgba(253, 187, 45, 1) 100%
   );
-}
+} */
