@@ -1,6 +1,6 @@
-import { FormEvent, ReactElement, useEffect, useState } from "react";
+import { FormEvent, ReactElement, useState } from "react";
 import { TTxMode } from "../App";
-import { useBalance, useAccount } from "wagmi";
+
 import useCustomBalance from "../hooks/useCustomBalance";
 
 type TProp = {
