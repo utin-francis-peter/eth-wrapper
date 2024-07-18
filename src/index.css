@@ -8,12 +8,13 @@ body {
   align-items: center;
   justify-content: center;
   color: #faf6f6;
+  background: rgba(23, 23, 33);
 }
 
-body {
-  background: radial-gradient(
-    circle,
-    rgba(236, 102, 255, 1) 0%,
-    rgba(28, 28, 40, 1) 100%
-  );
+@media screen and (min-width: 768px) {
+  .app {
+    border-radius: 40px;
+    box-shadow: 0 25px 50px -12px rgba(236, 102, 255, 0.8);
+    background: rgba(34, 34, 44, 0.6);
+  }
 }
