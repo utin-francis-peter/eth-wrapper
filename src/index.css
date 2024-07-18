@@ -13,7 +13,7 @@ body {
 body {
   background: radial-gradient(
     circle,
-    rgb(236, 102, 255, 1) 0%,
+    rgba(236, 102, 255, 1) 0%,
     rgba(28, 28, 40, 1) 100%
   );
 }
