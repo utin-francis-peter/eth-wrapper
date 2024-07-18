@@ -32,33 +32,34 @@ function App() {
         <main className="flex-1 flex flex-col gap-5 ">
           <div className="border shadow-lg rounded-md flex-1 flex flex-col w-[90%] mx-auto">
             <div className="flex-1 flex flex-col items-center justify-center gap-4 ">
-              <div className="flex justify-center gap-3">
-                <button
-                  className={`px-4 py-2  rounded-[12px] ${
-                    txMode === "WRAP" ? "border-2 border-white" : ""
-                  }`}
-                  onClick={() => setTxMode("WRAP")}
-                >
-                  Wrap SEP
-                </button>
-                <button
-                  className={`px-4 py-2 e rounded-[12px] ${
-                    txMode === "UNWRAP" ? "border-2 border-white" : ""
-                  }`}
-                  onClick={() => setTxMode("UNWRAP")}
-                >
-                  Unwrap SEP
-                </button>
-              </div>
+              {isConnected && (
+                <div className="flex justify-center gap-3">
+                  <button
+                    className={`px-4 py-2  rounded-[12px] ${
+                      txMode === "WRAP" ? "border-2 border-white" : ""
+                    }`}
+                    onClick={() => setTxMode("WRAP")}
+                  >
+                    Wrap SEP
+                  </button>
+                  <button
+                    className={`px-4 py-2 e rounded-[12px] ${
+                      txMode === "UNWRAP" ? "border-2 border-white" : ""
+                    }`}
+                    onClick={() => setTxMode("UNWRAP")}
+                  >
+                    Unwrap SEP
+                  </button>
+                </div>
+              )}
 
               {isConnected ? (
                 // wrapper wrapping connected wallet interface
                 <ConnectedWalletWrapper txMode={txMode} />
               ) : (
-                <div className="py-2 flex items-center justify-center border-2 flex-1 border-red-700">
-                  <h4 className="">
-                    Connect Wallet to{" "}
-                    {txMode[0] + txMode.slice(1).toLowerCase()} SEP
+                <div className="py-2 flex items-center justify-center ">
+                  <h4 className="text-xl font-bold">
+                    Connect Wallet to Wrap or Unwrap SEP
                   </h4>
                 </div>
               )}

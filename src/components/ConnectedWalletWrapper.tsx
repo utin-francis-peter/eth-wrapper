@@ -14,6 +14,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
   const [txAmount, setTxAmount] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [canFetchGas, setCanFetchGas] = useState(false);
+
   const { balance } = useCustomBalance();
   const { _writeContract, status: txStatus } = useDeposit();
   const { txGas, isLoading, isSuccess, isRefetching, resetGas } = useCustomGas({
