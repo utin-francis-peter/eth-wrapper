@@ -1,5 +1,4 @@
 import { useGasPrice, useAccount } from "wagmi";
-import { TProp } from "./useDeposit";
 import { useEffect, useState } from "react";
 import { formatUnits } from "viem";
 
