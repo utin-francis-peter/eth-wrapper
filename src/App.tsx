@@ -13,12 +13,12 @@ function App() {
   const { balance, isLoading } = useCustomBalance();
 
   return (
-    <div className="app flex items-center justify-center md:w-[50vw] max-w-5xl mx-auto h-[100vh] py-5 md:py-0 md:h-[70vh] md:shadow-2xl outline-none border-none bg-transparent ">
+    <div className="app flex items-center justify-center md:w-[50vw] max-w-5xl mx-auto h-[100vh] py-5 md:py-0 md:h-[70vh] outline-none border-none bg-transparent ">
       <div className="h-full md:h-[400px] flex gap-5 flex-col justify-between md:w-[90%]  ">
         <header className="flex justify-between items-center ">
           <div>
             {isConnected && (
-              <h2 className="text-black shadow-lg px-4 py-1 rounded-md bg-white">
+              <h2 className="text-gray-700 shadow-lg px-4 py-1 rounded-md bg-white">
                 {txMode === "WRAP" ? "SEP" : "WSEP"} Bal:{" "}
                 {isLoading ? "fetching bal..." : parseFloat(balance).toFixed(4)}
               </h2>
@@ -41,7 +41,7 @@ function App() {
                     }`}
                     onClick={() => setTxMode("WRAP")}
                   >
-                    Wrap SEP
+                    Wrap
                   </button>
                   <button
                     className={`px-4 py-2 e rounded-[12px] ${
@@ -49,7 +49,7 @@ function App() {
                     }`}
                     onClick={() => setTxMode("UNWRAP")}
                   >
-                    Unwrap SEP
+                    Unwrap
                   </button>
                 </div>
               )}
