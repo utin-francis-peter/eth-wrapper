@@ -10,7 +10,7 @@ export type TTxMode = "WRAP" | "UNWRAP";
 function App() {
   const { isConnected } = useAccount();
   const [txMode, setTxMode] = useState<TTxMode>("WRAP");
-  const { balance } = useCustomBalance();
+  const { balance, isLoading } = useCustomBalance();
 
   return (
     <div className="app flex items-center justify-center w-[50vw] max-w-5xl mx-auto  min-h-[70vh] shadow-2xl outline-none border-none bg-transparent">
@@ -19,7 +19,8 @@ function App() {
           <div>
             {isConnected && (
               <h2 className="text-black shadow-lg px-4 py-2 rounded-md bg-white">
-                {txMode === "WRAP" ? "SEP" : "WSEP"} Bal: {balance}
+                {txMode === "WRAP" ? "SEP" : "WSEP"} Bal:{" "}
+                {isLoading ? "fetching bal..." : balance}
               </h2>
             )}
           </div>
