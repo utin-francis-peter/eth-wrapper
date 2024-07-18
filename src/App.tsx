@@ -18,7 +18,7 @@ function App() {
         <header className="flex justify-between items-center ">
           <div>
             {isConnected && (
-              <h2 className="text-black shadow-lg px-4 py-2 rounded-md bg-white">
+              <h2 className="text-black shadow-lg px-4 py-1 rounded-md bg-white">
                 {txMode === "WRAP" ? "SEP" : "WSEP"} Bal:{" "}
                 {isLoading ? "fetching bal..." : parseFloat(balance).toFixed(4)}
               </h2>

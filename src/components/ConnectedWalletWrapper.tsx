@@ -43,7 +43,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
     }
   }, [txGas, txAmount, balance, isSuccess]);
 
-  const handleTxSubmission = (e: FormEvent) => {
+  const handleTxSubmission = async (e: FormEvent) => {
     e.preventDefault();
 
     const _txAmount = +txAmount;
@@ -67,8 +67,10 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
         break;
     }
 
-    setCanFetchGas(false);
-    resetGas();
+    if (txStatus === "success") {
+      setCanFetchGas(false);
+      resetGas();
+    }
   };
 
   return (
@@ -91,7 +93,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
         <input
           className="px-3 py-1 cursor-pointer border-b rounded-xl"
           type="button"
-          value="Set Max"
+          value="Set max"
           onClick={() => {
             const availableBal = +balance;
             setTxAmount(availableBal.toFixed(4));
@@ -112,7 +114,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
       </div>
 
       <button
-        className={`w-full self-stretch border border-gray-300 disabled:text-red-300 disabled:cursor-not-allowed rounded-[40px] py-4 text-lg md:mt-4`}
+        className={`w-full self-stretch border border-gray-300 disabled:text-red-300 disabled:cursor-not-allowed rounded-[40px] py-[13px]  text-lg md:mt-4`}
         disabled={!!errorMessage}
       >
         {!!errorMessage
