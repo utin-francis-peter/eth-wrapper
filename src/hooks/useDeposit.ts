@@ -1,4 +1,4 @@
-import { useWriteContract, useAccount, useGasPrice } from "wagmi";
+import { useWriteContract, useAccount } from "wagmi";
 import ABI from "../contracts/weth/ABI.json";
 import { addresses } from "../contracts/weth/addresses";
 import { parseEther } from "viem";
