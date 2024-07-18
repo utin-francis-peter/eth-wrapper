@@ -74,7 +74,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
   return (
     <form
       onSubmit={handleTxSubmission}
-      className="w-[80%] h-1/2 flex flex-col justify-around"
+      className="md:w-[80%] md:h-1/2 md:flex flex-col justify-around"
     >
       <fieldset className="flex my-2 h-1/3 w-4/5 mx-auto justify-around items-center gap-2 ">
         <input
@@ -89,7 +89,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
           required
         />
         <input
-          className="px-3 py-1 cursor-pointer border border-gray-400 rounded-xl"
+          className="px-3 py-1 cursor-pointer border-b rounded-xl"
           type="button"
           value="Set Max"
           onClick={() => {
@@ -99,7 +99,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
         />
       </fieldset>
 
-      <div className="flex flex-col gap-2 items-center mt-2 justify-center">
+      <div className="flex flex-col gap-2 items-center my-5 md:my-0 mt-2 justify-center">
         {isLoading || isRefetching ? (
           <p>Fetching gas fee...</p>
         ) : isSuccess && !!txGas ? (
@@ -112,7 +112,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
       </div>
 
       <button
-        className={`w-full self-stretch border border-gray-300 disabled:text-red-300 disabled:cursor-not-allowed rounded-[40px] py-4 text-lg mt-4`}
+        className={`w-full self-stretch border border-gray-300 disabled:text-red-300 disabled:cursor-not-allowed rounded-[40px] py-4 text-lg md:mt-4`}
         disabled={!!errorMessage}
       >
         {!!errorMessage
