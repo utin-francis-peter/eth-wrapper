@@ -93,7 +93,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
         <input
           className="px-3 py-1 cursor-pointer border-b rounded-xl"
           type="button"
-          value="Set Max"
+          value="Set max"
           onClick={() => {
             const availableBal = +balance;
             setTxAmount(availableBal.toFixed(4));
