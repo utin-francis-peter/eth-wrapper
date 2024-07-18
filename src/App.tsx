@@ -18,7 +18,7 @@ function App() {
         <header className="flex justify-between items-center ">
           <div>
             {isConnected && (
-              <h2 className="text-gray-700 shadow-lg px-4 py-1 rounded-md bg-white">
+              <h2 className="text-gray-800 shadow-lg px-4 py-1 rounded-md bg-white">
                 {txMode === "WRAP" ? "SEP" : "WSEP"} Bal:{" "}
                 {isLoading ? "fetching bal..." : parseFloat(balance).toFixed(4)}
               </h2>
@@ -37,7 +37,7 @@ function App() {
                 <div className="flex justify-center gap-3">
                   <button
                     className={`px-4 py-2  rounded-[12px] ${
-                      txMode === "WRAP" ? "border-2 border-white" : ""
+                      txMode === "WRAP" ? "border border-white" : ""
                     }`}
                     onClick={() => setTxMode("WRAP")}
                   >
@@ -45,7 +45,7 @@ function App() {
                   </button>
                   <button
                     className={`px-4 py-2 e rounded-[12px] ${
-                      txMode === "UNWRAP" ? "border-2 border-white" : ""
+                      txMode === "UNWRAP" ? "border border-white" : ""
                     }`}
                     onClick={() => setTxMode("UNWRAP")}
                   >
@@ -68,7 +68,7 @@ function App() {
           </div>
 
           <footer className="">
-            <i className="block md:text-center">
+            <i className="block md:text-center text-xs">
               Built by{" "}
               <span className="text-gray-200 hover:text-white transition-colors ease-in">
                 utin-francis-peter

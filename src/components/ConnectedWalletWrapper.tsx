@@ -80,8 +80,9 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
     >
       <fieldset className="flex my-2 h-1/3 w-4/5 mx-auto justify-around items-center gap-2 ">
         <input
-          className="block text-black w-full border-2 px-3 py-1 rounded-xl focus:outline-none focus:border-gray-400"
+          className="block text-black w-full border-2 px-3 py-1 rounded-xl focus:outline-2 focus:outline-primary "
           type="number"
+          autoFocus
           placeholder="00.00"
           min={0}
           max={balance}
@@ -91,7 +92,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
           required
         />
         <input
-          className="px-3 py-1 cursor-pointer border-b rounded-xl"
+          className="px-3 py-1 cursor-pointer border-b border-b-white rounded-xl"
           type="button"
           value="Set max"
           onClick={() => {
@@ -114,8 +115,13 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
       </div>
 
       <button
-        className={`w-full self-stretch border border-gray-300 disabled:text-red-300 disabled:cursor-not-allowed rounded-[40px] py-[13px]  text-lg md:mt-4`}
+        className={`w-full self-stretch  disabled:cursor-not-allowed rounded-[40px] py-[13px]  text-lg md:mt-4`}
         disabled={!!errorMessage}
+        style={
+          !!errorMessage
+            ? { background: "rgba(236, 102, 255, 0.1)" }
+            : { background: "rgba(236, 102, 255, 0.6)" }
+        }
       >
         {!!errorMessage
           ? errorMessage
