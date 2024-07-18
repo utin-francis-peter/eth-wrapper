@@ -4,18 +4,18 @@ import { useBalance, useAccount } from "wagmi";
 const useCustomBalance = () => {
   const { address } = useAccount();
 
-  const getBalance = useBalance({ address });
+  const { data, isLoading } = useBalance({ address });
 
   const [balance, setBalance] = useState<any>(null);
 
   useEffect(() => {
-    if (getBalance.data) {
-      const retrievedBalance = getBalance.data?.formatted ?? 0;
+    if (data) {
+      const retrievedBalance = data.formatted ?? 0;
       setBalance(retrievedBalance);
     }
-  }, [address, getBalance.data]);
+  }, [address, data]);
 
-  return { balance };
+  return { balance, isLoading };
 };
 
 export default useCustomBalance;
