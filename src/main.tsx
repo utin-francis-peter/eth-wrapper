@@ -7,7 +7,6 @@ import "@rainbow-me/rainbowkit/styles.css";
 import {
   darkTheme,
   getDefaultConfig,
-  lightTheme,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
