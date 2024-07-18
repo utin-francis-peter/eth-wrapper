@@ -112,7 +112,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
       </div>
 
       <button
-        className={`w-full self-stretch border border-gray-300 disabled:text-red-300 disabled:cursor-not-allowed rounded-md py-4 text-lg mt-4`}
+        className={`w-full self-stretch border border-gray-300 disabled:text-red-300 disabled:cursor-not-allowed rounded-[40px] py-4 text-lg mt-4`}
         disabled={!!errorMessage}
       >
         {!!errorMessage
