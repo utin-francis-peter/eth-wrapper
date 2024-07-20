@@ -15,11 +15,14 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [canFetchGas, setCanFetchGas] = useState(false);
 
-  const { balance } = useCustomBalance();
+  const { balance } = useCustomBalance({
+    txAction: txMode,
+  });
   const { _writeContract, status: txStatus } = useDeposit();
   const { txGas, isLoading, isSuccess, isRefetching, resetGas } = useCustomGas({
     canFetchGas,
   });
+  console.log("WRAPPER COMPONENT RE_RENDERED!");
 
   useEffect(() => {
     if (parseFloat(txAmount) > 0) {
