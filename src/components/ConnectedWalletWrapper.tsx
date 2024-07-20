@@ -105,19 +105,22 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
         />
       </fieldset>
 
-      {txMode === "WRAP" && (
-        <div className="flex flex-col gap-2 items-center my-3 justify-center">
-          {isLoading || isRefetching ? (
-            <p>Fetching gas fee...</p>
-          ) : isSuccess && !!txGas ? (
-            <p>
-              <span className="font-bold">Gas fee</span>: {txGas} SEP
-            </p>
-          ) : (
-            ""
-          )}
-        </div>
-      )}
+      {
+        //gas fee !required during unwrapping
+        txMode === "WRAP" && (
+          <div className="flex flex-col gap-2 items-center my-3 justify-center">
+            {isLoading || isRefetching ? (
+              <p>Fetching gas fee...</p>
+            ) : isSuccess && !!txGas ? (
+              <p>
+                <span className="font-bold">Gas fee</span>: {txGas} SEP
+              </p>
+            ) : (
+              ""
+            )}
+          </div>
+        )
+      }
 
       <button
         className={`w-full self-stretch  disabled:cursor-not-allowed rounded-[40px] py-[13px]  text-lg md:my-1`}
