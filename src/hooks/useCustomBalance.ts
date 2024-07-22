@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useBalance, useAccount, useReadContract } from "wagmi";
 import { TTxMode } from "../App";
 import ABI from "../contracts/weth/ABI.json";
 import { addresses } from "../contracts/weth/addresses";
-import { writeContract } from "wagmi/actions";
 import { formatUnits } from "viem";
 
 const contractAddress = addresses.sepolia;
@@ -12,7 +11,7 @@ const useCustomBalance = ({ txAction }: { txAction: TTxMode }) => {
   const { address, chainId } = useAccount();
 
   const {
-    data,
+    data: _ethBalance,
     isLoading: ethBalanceIsLoading,
     isError: isErrorLoadingEthBalance,
   } = useBalance({
@@ -20,9 +19,9 @@ const useCustomBalance = ({ txAction }: { txAction: TTxMode }) => {
   });
 
   const {
-    data: wethBalance,
-    isError: isErrorLoadingWethBalance,
+    data: _wethBalance,
     isLoading: wethBalanceIsLoading,
+    isError: isErrorLoadingWethBalance,
   } = useReadContract({
     abi: ABI,
     address: contractAddress as `0x${string}`,
@@ -32,32 +31,38 @@ const useCustomBalance = ({ txAction }: { txAction: TTxMode }) => {
     args: address ? [address] : [],
   });
 
-  const [balance, setBalance] = useState<any>(null);
+  const [ethBalance, setEthBalance] = useState<string | null>(null);
+  const [wethBalance, setWethBalance] = useState<string | null>(null);
 
   useEffect(() => {
+    if (_ethBalance) {
+      setEthBalance(_ethBalance.formatted ?? "0");
+    }
+  }, [_ethBalance]);
+
+  useEffect(() => {
+    if (_wethBalance) {
+      const formattedBalance = formatUnits(_wethBalance as bigint, 18) ?? 0;
+      setWethBalance(formattedBalance);
+    }
+  }, [_wethBalance]);
+
+  // memoizing computed balance to reduce recalculation costs
+  const balance = useMemo(() => {
     switch (txAction) {
       case "WRAP":
-        if (data) {
-          const retrievedBalance = data.formatted ?? 0;
-          setBalance(retrievedBalance);
-        }
-        break;
+        return ethBalance;
 
       case "UNWRAP":
-        if (wethBalance) {
-          const retrievedBalance = formatUnits(wethBalance as bigint, 18) ?? 0;
-          setBalance(retrievedBalance);
-        }
-        break;
+        return wethBalance;
 
       default:
         console.log(
           "an invalid tx action was received! tx action must be WRAP or UNWRAP."
         );
-
         break;
     }
-  }, [address, txAction, data, wethBalance]);
+  }, [txAction, ethBalance, wethBalance]);
 
   return {
     balance,
