@@ -2,7 +2,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useState } from "react";
 
-import ConnectedWalletWrapper from "./components/ConnectedWalletWrapper";
+import ConnectedWalletWrapper from "./components/ConnectedWalletView";
 import useCustomBalance from "./hooks/useCustomBalance";
 
 export type TTxMode = "WRAP" | "UNWRAP";
@@ -10,7 +10,7 @@ export type TTxMode = "WRAP" | "UNWRAP";
 function App() {
   const { isConnected } = useAccount();
   const [txMode, setTxMode] = useState<TTxMode>("WRAP");
-  const { balance, isLoading } = useCustomBalance();
+  const { ethBalance, wethBalance, isLoading, isError } = useCustomBalance();
 
   return (
     <div className="app flex items-center justify-center md:w-[50vw] max-w-5xl mx-auto h-[100vh] py-5 md:py-0 md:h-[70vh] outline-none border-none bg-transparent ">
@@ -18,9 +18,15 @@ function App() {
         <header className="flex justify-between items-center ">
           <div>
             {isConnected && (
-              <h2 className="text-gray-700 shadow-lg px-4 py-1 rounded-md bg-white">
+              <h2 className="text-gray-800 shadow-lg px-4 py-1 rounded-md bg-white">
                 {txMode === "WRAP" ? "SEP" : "WSEP"} Bal:{" "}
-                {isLoading ? "fetching bal..." : parseFloat(balance).toFixed(4)}
+                {isLoading
+                  ? "fetching bal..."
+                  : isError
+                  ? "Error fetching bal."
+                  : txMode === "WRAP"
+                  ? parseFloat(ethBalance!).toFixed(4)
+                  : parseFloat(wethBalance!).toFixed(4)}
               </h2>
             )}
           </div>
@@ -31,13 +37,13 @@ function App() {
         </header>
 
         <main className="flex-1 flex flex-col justify-between md:justify-normal gap-5 ">
-          <div className="md:border shadow-lg rounded-md md:flex-1 flex flex-col md:w-[90%] mx-auto h-[90%] md:h-auto p-3">
+          <div className="md:border shadow-lg rounded-lg md:flex-1 flex flex-col md:w-[90%] mx-auto h-[90%] md:h-auto p-3">
             <div className="flex-1 flex flex-col items-center justify-center gap-4 ">
               {isConnected && (
                 <div className="flex justify-center gap-3">
                   <button
                     className={`px-4 py-2  rounded-[12px] ${
-                      txMode === "WRAP" ? "border-2 border-white" : ""
+                      txMode === "WRAP" ? "border border-white" : ""
                     }`}
                     onClick={() => setTxMode("WRAP")}
                   >
@@ -45,7 +51,7 @@ function App() {
                   </button>
                   <button
                     className={`px-4 py-2 e rounded-[12px] ${
-                      txMode === "UNWRAP" ? "border-2 border-white" : ""
+                      txMode === "UNWRAP" ? "border border-white" : ""
                     }`}
                     onClick={() => setTxMode("UNWRAP")}
                   >
@@ -68,7 +74,7 @@ function App() {
           </div>
 
           <footer className="">
-            <i className="block md:text-center">
+            <i className="block md:text-center text-xs">
               Built by{" "}
               <span className="text-gray-200 hover:text-white transition-colors ease-in">
                 utin-francis-peter

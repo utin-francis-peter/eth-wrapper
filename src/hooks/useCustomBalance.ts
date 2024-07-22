@@ -1,21 +1,61 @@
 import { useEffect, useState } from "react";
-import { useBalance, useAccount } from "wagmi";
+import { useBalance, useAccount, useReadContract } from "wagmi";
+import ABI from "../contracts/weth/ABI.json";
+import { addresses } from "../contracts/weth/addresses";
+import { formatUnits } from "viem";
+
+const contractAddress = addresses.sepolia;
 
 const useCustomBalance = () => {
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
 
-  const { data, isLoading } = useBalance({ address });
+  const {
+    data: _ethBalance,
+    isLoading: ethBalanceIsLoading,
+    isError: isErrorLoadingEthBalance,
+  } = useBalance({
+    address,
+  });
 
-  const [balance, setBalance] = useState<any>(null);
+  const {
+    data: _wethBalance,
+    isLoading: wethBalanceIsLoading,
+    isError: isErrorLoadingWethBalance,
+  } = useReadContract({
+    abi: ABI,
+    address: contractAddress as `0x${string}`,
+    functionName: "balanceOf",
+    account: address,
+    chainId,
+    args: address ? [address] : [],
+  });
+
+  const [ethBalance, setEthBalance] = useState("0");
+  const [wethBalance, setWethBalance] = useState("0");
 
   useEffect(() => {
-    if (data) {
-      const retrievedBalance = data.formatted ?? 0;
-      setBalance(retrievedBalance);
+    if (_ethBalance) {
+      setEthBalance(_ethBalance.formatted ?? "0");
+    } else {
+      setEthBalance("0");
     }
-  }, [address, data]);
+  }, [_ethBalance]);
 
-  return { balance, isLoading };
+  useEffect(() => {
+    if (_wethBalance) {
+      const formattedBalance = formatUnits(_wethBalance as bigint, 18);
+      setWethBalance(formattedBalance ?? "0");
+    } else {
+      setWethBalance("0");
+    }
+  }, [_wethBalance]);
+
+  return {
+    ethBalance,
+    wethBalance,
+    isLoading: ethBalanceIsLoading || wethBalanceIsLoading,
+    isError: isErrorLoadingEthBalance || isErrorLoadingWethBalance,
+  };
 };
 
 export default useCustomBalance;
