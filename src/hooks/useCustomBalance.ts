@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useBalance, useAccount, useReadContract } from "wagmi";
-import { TTxMode } from "../App";
 import ABI from "../contracts/weth/ABI.json";
 import { addresses } from "../contracts/weth/addresses";
 import { formatUnits } from "viem";
 
 const contractAddress = addresses.sepolia;
 
-const useCustomBalance = ({ txAction }: { txAction: TTxMode }) => {
+const useCustomBalance = () => {
   const { address, chainId } = useAccount();
 
   const {
@@ -31,41 +30,29 @@ const useCustomBalance = ({ txAction }: { txAction: TTxMode }) => {
     args: address ? [address] : [],
   });
 
-  const [ethBalance, setEthBalance] = useState<string | null>(null);
-  const [wethBalance, setWethBalance] = useState<string | null>(null);
+  const [ethBalance, setEthBalance] = useState("0");
+  const [wethBalance, setWethBalance] = useState("0");
 
   useEffect(() => {
     if (_ethBalance) {
       setEthBalance(_ethBalance.formatted ?? "0");
+    } else {
+      setEthBalance("0");
     }
   }, [_ethBalance]);
 
   useEffect(() => {
     if (_wethBalance) {
-      const formattedBalance = formatUnits(_wethBalance as bigint, 18) ?? 0;
-      setWethBalance(formattedBalance);
+      const formattedBalance = formatUnits(_wethBalance as bigint, 18);
+      setWethBalance(formattedBalance ?? "0");
+    } else {
+      setWethBalance("0");
     }
   }, [_wethBalance]);
 
-  // memoizing computed balance to reduce recalculation costs
-  const balance = useMemo(() => {
-    switch (txAction) {
-      case "WRAP":
-        return ethBalance;
-
-      case "UNWRAP":
-        return wethBalance;
-
-      default:
-        console.log(
-          "an invalid tx action was received! tx action must be WRAP or UNWRAP."
-        );
-        break;
-    }
-  }, [txAction, ethBalance, wethBalance]);
-
   return {
-    balance,
+    ethBalance,
+    wethBalance,
     isLoading: ethBalanceIsLoading || wethBalanceIsLoading,
     isError: isErrorLoadingEthBalance || isErrorLoadingWethBalance,
   };

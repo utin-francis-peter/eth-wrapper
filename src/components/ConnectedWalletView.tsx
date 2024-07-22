@@ -16,24 +16,24 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [canFetchGas, setCanFetchGas] = useState(false);
 
-  const { balance } = useCustomBalance({
-    txAction: txMode,
-  });
+  const { ethBalance, wethBalance } = useCustomBalance();
 
   const { _writeContract: _writeDepositContract, status: depositStatus } =
     useDeposit();
   const { _writeContract: _writeWithdrawContract, status: withdrawStatus } =
     useWithdraw();
-  const { txGas, isLoading, isSuccess, isRefetching, resetGas } = useCustomGas({
+  const {
+    txGas,
+    isLoading,
+    isSuccess: gasFetchIsSuccess,
+    isRefetching,
+    resetGas,
+  } = useCustomGas({
     canFetchGas,
   });
 
-  console.log("CURRENT BALANCE IS: ", balance);
-  console.log("CURRENT txMode IS: ", txMode);
-
-  // gas should only be fetched when txMode is Wrap
   useEffect(() => {
-    if (parseFloat(txAmount) > 0 && txMode !== "UNWRAP") {
+    if (parseFloat(txAmount) > 0) {
       setCanFetchGas(true);
     } else {
       setCanFetchGas(false);
@@ -42,30 +42,23 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
   }, [txAmount]); // activates gas fetch function
 
   useEffect(() => {
-    if (txMode !== "UNWRAP" && isSuccess) {
+    if (gasFetchIsSuccess) {
       if (
         Number(txAmount).toFixed(4) + Number(txGas).toFixed(4) >
-        Number(balance).toFixed(4)
+        Number(ethBalance).toFixed(4)
       ) {
         setErrorMessage("Insufficient SEP balance");
       } else {
         setErrorMessage("");
       }
     }
-  }, [txGas, txAmount, balance, isSuccess, txMode]);
-
-  useEffect(() => {
-    if (txMode === "UNWRAP") {
-      setErrorMessage("");
-      setCanFetchGas(false);
-    }
-  }, [txMode]);
+  }, [txGas, txAmount, ethBalance, gasFetchIsSuccess, txMode]);
 
   const handleTxSubmission = async (e: FormEvent) => {
     e.preventDefault();
 
     const _txAmount = +txAmount;
-    const _balance = +balance!;
+    const _balance = +ethBalance!;
 
     if (_txAmount.toFixed(4) > _balance.toFixed(4)) {
       return;
@@ -91,6 +84,10 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
     if (depositStatus === "success" || withdrawStatus === "success") {
       setCanFetchGas(false);
       resetGas();
+      // refetch balance
+      // use toast message to show tx success
+    } else {
+      // use toast message to give error feedbacks
     }
   };
 
@@ -106,7 +103,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
           autoFocus
           placeholder="00.00"
           min={0}
-          max={balance!}
+          max={txMode === "WRAP" ? ethBalance! : wethBalance!}
           step={"any"}
           value={txAmount}
           onChange={(e) => setTxAmount(e.target.value)}
@@ -117,29 +114,22 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
           type="button"
           value="Set max"
           onClick={() => {
-            const availableBal = +balance!;
-            setTxAmount(availableBal.toFixed(4));
+            const availableBal = txMode === "WRAP" ? ethBalance! : wethBalance!;
+            setTxAmount(parseFloat(availableBal).toFixed(4));
           }}
         />
       </fieldset>
 
-      <div className="my-3 ">
-        {
-          //gas fee !required during unwrapping
-          txMode === "WRAP" && (
-            <div className="flex flex-col gap-2 items-center justify-center">
-              {isLoading || isRefetching ? (
-                <p>Fetching gas fee...</p>
-              ) : isSuccess && !!txGas ? (
-                <p>
-                  <span className="font-bold">Gas fee</span>: {txGas} SEP
-                </p>
-              ) : (
-                ""
-              )}
-            </div>
-          )
-        }
+      <div className="flex flex-col gap-2 my-3 items-center justify-center">
+        {isLoading || isRefetching ? (
+          <p>Fetching gas fee...</p>
+        ) : gasFetchIsSuccess && !!txGas ? (
+          <p>
+            <span className="font-bold">Gas fee</span>: {txGas} SEP
+          </p>
+        ) : (
+          ""
+        )}
       </div>
 
       <button

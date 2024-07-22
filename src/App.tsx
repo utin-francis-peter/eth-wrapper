@@ -2,7 +2,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useState } from "react";
 
-import ConnectedWalletWrapper from "./components/ConnectedWalletWrapper";
+import ConnectedWalletWrapper from "./components/ConnectedWalletView";
 import useCustomBalance from "./hooks/useCustomBalance";
 
 export type TTxMode = "WRAP" | "UNWRAP";
@@ -10,9 +10,7 @@ export type TTxMode = "WRAP" | "UNWRAP";
 function App() {
   const { isConnected } = useAccount();
   const [txMode, setTxMode] = useState<TTxMode>("WRAP");
-  const { balance, isLoading, isError } = useCustomBalance({
-    txAction: txMode,
-  });
+  const { ethBalance, wethBalance, isLoading, isError } = useCustomBalance();
 
   return (
     <div className="app flex items-center justify-center md:w-[50vw] max-w-5xl mx-auto h-[100vh] py-5 md:py-0 md:h-[70vh] outline-none border-none bg-transparent ">
@@ -26,7 +24,9 @@ function App() {
                   ? "fetching bal..."
                   : isError
                   ? "Error fetching bal."
-                  : parseFloat(balance).toFixed(4)}
+                  : txMode === "WRAP"
+                  ? parseFloat(ethBalance!).toFixed(4)
+                  : parseFloat(wethBalance!).toFixed(4)}
               </h2>
             )}
           </div>
@@ -37,7 +37,7 @@ function App() {
         </header>
 
         <main className="flex-1 flex flex-col justify-between md:justify-normal gap-5 ">
-          <div className="md:border shadow-lg rounded-md md:flex-1 flex flex-col md:w-[90%] mx-auto h-[90%] md:h-auto p-3">
+          <div className="md:border shadow-lg rounded-lg md:flex-1 flex flex-col md:w-[90%] mx-auto h-[90%] md:h-auto p-3">
             <div className="flex-1 flex flex-col items-center justify-center gap-4 ">
               {isConnected && (
                 <div className="flex justify-center gap-3">
