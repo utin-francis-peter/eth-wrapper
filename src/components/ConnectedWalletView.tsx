@@ -3,6 +3,7 @@ import { TTxMode } from "../App";
 
 import useCustomBalance from "../hooks/useCustomBalance";
 import useDeposit from "../hooks/useDeposit";
+import useWithdraw from "../hooks/useWithdraw";
 import useCustomGas from "../hooks/useCustomGas";
 
 type TProp = {
@@ -18,14 +19,21 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
   const { balance } = useCustomBalance({
     txAction: txMode,
   });
-  const { _writeContract, status: txStatus } = useDeposit();
+
+  const { _writeContract: _writeDepositContract, status: depositStatus } =
+    useDeposit();
+  const { _writeContract: _writeWithdrawContract, status: withdrawStatus } =
+    useWithdraw();
   const { txGas, isLoading, isSuccess, isRefetching, resetGas } = useCustomGas({
     canFetchGas,
   });
-  console.log("WRAPPER COMPONENT RE_RENDERED!");
 
+  console.log("CURRENT BALANCE IS: ", balance);
+  console.log("CURRENT txMode IS: ", txMode);
+
+  // gas should only be fetched when txMode is Wrap
   useEffect(() => {
-    if (parseFloat(txAmount) > 0) {
+    if (parseFloat(txAmount) > 0 && txMode !== "UNWRAP") {
       setCanFetchGas(true);
     } else {
       setCanFetchGas(false);
@@ -34,7 +42,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
   }, [txAmount]); // activates gas fetch function
 
   useEffect(() => {
-    if (isSuccess) {
+    if (txMode !== "UNWRAP" && isSuccess) {
       if (
         Number(txAmount).toFixed(4) + Number(txGas).toFixed(4) >
         Number(balance).toFixed(4)
@@ -44,13 +52,20 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
         setErrorMessage("");
       }
     }
-  }, [txGas, txAmount, balance, isSuccess]);
+  }, [txGas, txAmount, balance, isSuccess, txMode]);
+
+  useEffect(() => {
+    if (txMode === "UNWRAP") {
+      setErrorMessage("");
+      setCanFetchGas(false);
+    }
+  }, [txMode]);
 
   const handleTxSubmission = async (e: FormEvent) => {
     e.preventDefault();
 
     const _txAmount = +txAmount;
-    const _balance = +balance;
+    const _balance = +balance!;
 
     if (_txAmount.toFixed(4) > _balance.toFixed(4)) {
       return;
@@ -59,9 +74,12 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
 
     switch (txMode) {
       case "WRAP":
-        txAmount && _writeContract({ txAmount });
+        txAmount && _writeDepositContract({ txAmount });
         break;
+
       case "UNWRAP":
+        txAmount && _writeWithdrawContract({ txAmount });
+
         break;
 
       default:
@@ -70,7 +88,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
         break;
     }
 
-    if (txStatus === "success") {
+    if (depositStatus === "success" || withdrawStatus === "success") {
       setCanFetchGas(false);
       resetGas();
     }
@@ -88,7 +106,7 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
           autoFocus
           placeholder="00.00"
           min={0}
-          max={balance}
+          max={balance!}
           step={"any"}
           value={txAmount}
           onChange={(e) => setTxAmount(e.target.value)}
@@ -99,28 +117,30 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
           type="button"
           value="Set max"
           onClick={() => {
-            const availableBal = +balance;
+            const availableBal = +balance!;
             setTxAmount(availableBal.toFixed(4));
           }}
         />
       </fieldset>
 
-      {
-        //gas fee !required during unwrapping
-        txMode === "WRAP" && (
-          <div className="flex flex-col gap-2 items-center my-3 justify-center">
-            {isLoading || isRefetching ? (
-              <p>Fetching gas fee...</p>
-            ) : isSuccess && !!txGas ? (
-              <p>
-                <span className="font-bold">Gas fee</span>: {txGas} SEP
-              </p>
-            ) : (
-              ""
-            )}
-          </div>
-        )
-      }
+      <div className="my-3 ">
+        {
+          //gas fee !required during unwrapping
+          txMode === "WRAP" && (
+            <div className="flex flex-col gap-2 items-center justify-center">
+              {isLoading || isRefetching ? (
+                <p>Fetching gas fee...</p>
+              ) : isSuccess && !!txGas ? (
+                <p>
+                  <span className="font-bold">Gas fee</span>: {txGas} SEP
+                </p>
+              ) : (
+                ""
+              )}
+            </div>
+          )
+        }
+      </div>
 
       <button
         className={`w-full self-stretch  disabled:cursor-not-allowed rounded-[40px] py-[13px]  text-lg md:my-1`}
@@ -133,9 +153,9 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
       >
         {!!errorMessage
           ? errorMessage
-          : txStatus === "pending"
-          ? "Wrapping..."
-          : "Wrap SEP"}
+          : depositStatus === "pending" || withdrawStatus === "pending"
+          ? `${txMode === "WRAP" ? "Wrapping" : "Unwrapping"} SEP...`
+          : `${txMode === "WRAP" ? "Wrap" : "Unwrap"} SEP`}
       </button>
     </form>
   );
