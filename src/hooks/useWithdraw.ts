@@ -32,6 +32,8 @@ const useWithdraw = () => {
         },
 
         onError: (_, err) => {
+          console.log(err);
+
           //TODO: use toast
         },
       }
