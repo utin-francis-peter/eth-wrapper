@@ -76,9 +76,13 @@ function App() {
           <footer className="">
             <i className="block md:text-center text-xs">
               Built by{" "}
-              <span className="text-gray-200 hover:text-white transition-colors ease-in">
+              <a
+                href="https://github.com/utin-francis-peter/eth-wrapper"
+                target="_blank"
+                className="text-gray-200 hover:text-white transition-colors ease-in"
+              >
                 utin-francis-peter
-              </span>
+              </a>
             </i>
           </footer>
         </main>
