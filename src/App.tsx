@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import ConnectedWalletWrapper from "./components/ConnectedWalletView";
 import useCustomBalance from "./hooks/useCustomBalance";
+import RetryBalFetch from "./components/retryBalFetch";
 
 export type TTxMode = "WRAP" | "UNWRAP";
 
@@ -11,28 +12,27 @@ function App() {
   const { isConnected } = useAccount();
   const [txMode, setTxMode] = useState<TTxMode>("WRAP");
   const { ethBalance, wethBalance, isLoading, isError } = useCustomBalance();
-  console.log("OUTCOME OF BALANCE FETCH: ", isError);
+  // console.log("OUTCOME OF BALANCE FETCH: ", isError);
 
   return (
     <div className="app flex items-center justify-center md:w-[50vw] max-w-5xl mx-auto h-[100vh] py-5 md:py-0 md:h-[70vh] outline-none border-none bg-transparent ">
       <div className="h-full md:h-[400px] flex gap-5 flex-col justify-between md:w-[90%]  ">
         <header className="flex justify-between items-center ">
-          <div>
+          <div className="flex items-center gap-2">
             {isConnected && (
               <h2
-                className={`text-gray-800 shadow-lg px-4 py-1 rounded-md bg-${
-                  !isError ? "white" : "bg-gray-200"
-                } flex items-center gap-1`}
+                className={`text-gray-800 shadow-lg px-4 py-1 rounded-md bg-white  flex items-center gap-1`}
+                style={
+                  isError ? { background: "rgba(236, 102, 255, 0.1)" } : {}
+                }
               >
-                <span className={isError ? "hidden" : "block"}>
+                <span className={isError || isLoading ? "hidden" : "block"}>
                   {txMode === "WRAP" ? "SEP" : "WSEP"} Bal:
                 </span>
                 {isLoading ? (
                   "fetching bal..."
                 ) : isError ? (
-                  <span className="text-red-400 text-sm">
-                    error fetching bal
-                  </span>
+                  <span className="text-red-500">error fetching bal</span>
                 ) : txMode === "WRAP" ? (
                   parseFloat(ethBalance!).toFixed(4)
                 ) : (
@@ -40,6 +40,8 @@ function App() {
                 )}
               </h2>
             )}
+
+            {isError && <RetryBalFetch />}
           </div>
 
           <div className={`${!isConnected ? "border" : ""} rounded-md`}>

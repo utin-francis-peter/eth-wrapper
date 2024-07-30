@@ -116,7 +116,12 @@ const ConnectedWalletWrapper = ({
           required
         />
         <input
-          className="px-3 py-2 cursor-pointer disabled:cursor-not-allowed disabled:border-b-red-400 disabled:text-red-400 border-b border-b-white rounded-xl"
+          className="px-3 py-2 cursor-pointer disabled:cursor-not-allowed border-b border-b-white rounded-xl"
+          style={
+            isErrorFetchingBal
+              ? { borderBottomColor: "rgba(236, 102, 255, 0.1)" }
+              : {}
+          }
           disabled={isErrorFetchingBal}
           type="button"
           value="Set max"
