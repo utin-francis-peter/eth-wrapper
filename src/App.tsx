@@ -18,15 +18,25 @@ function App() {
         <header className="flex justify-between items-center ">
           <div>
             {isConnected && (
-              <h2 className="text-gray-800 shadow-lg px-4 py-1 rounded-md bg-white">
-                {txMode === "WRAP" ? "SEP" : "WSEP"} Bal:{" "}
-                {isLoading
-                  ? "fetching bal..."
-                  : isError
-                  ? "Error fetching bal."
-                  : txMode === "WRAP"
-                  ? parseFloat(ethBalance!).toFixed(4)
-                  : parseFloat(wethBalance!).toFixed(4)}
+              <h2
+                className={`text-gray-800 shadow-lg px-4 py-1 rounded-md bg-${
+                  !isError ? "white" : "bg-gray-200"
+                } flex items-center gap-1`}
+              >
+                <span className={isError ? "hidden" : "block"}>
+                  {txMode === "WRAP" ? "SEP" : "WSEP"} Bal:
+                </span>
+                {isLoading ? (
+                  "fetching bal..."
+                ) : isError ? (
+                  <span className="text-red-400 text-sm">
+                    error fetching bal
+                  </span>
+                ) : txMode === "WRAP" ? (
+                  parseFloat(ethBalance!).toFixed(4)
+                ) : (
+                  parseFloat(wethBalance!).toFixed(4)
+                )}
               </h2>
             )}
           </div>
@@ -61,7 +71,7 @@ function App() {
               )}
 
               {isConnected ? (
-                // wrapper wrapping connected wallet interface
+                // connected wallet interface
                 <ConnectedWalletWrapper txMode={txMode} />
               ) : (
                 <div className="py-2 flex items-center justify-center ">
@@ -73,15 +83,24 @@ function App() {
             </div>
           </div>
 
-          <footer className="">
-            <i className="block md:text-center text-xs">
+          <footer className="flex justify-between items-center">
+            <i className="block md:text-center text-gray-500 text-xs">
               Built by{" "}
               <a
                 href="https://github.com/utin-francis-peter/eth-wrapper"
                 target="_blank"
-                className="text-gray-200 hover:text-white transition-colors ease-in"
+                className="font-bold hover:text-white transition-colors ease-in"
               >
-                utin-francis-peter
+                <u>utin-francis-peter</u>
+              </a>
+            </i>
+            <i className="block md:text-center text-xs font-bold">
+              <a
+                href="https://github.com/utin-francis-peter/eth-wrapper"
+                target="_blank"
+                className="text-gray-500 hover:text-white transition-colors ease-in"
+              >
+                GitHub Repo
               </a>
             </i>
           </footer>
