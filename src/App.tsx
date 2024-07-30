@@ -11,6 +11,7 @@ function App() {
   const { isConnected } = useAccount();
   const [txMode, setTxMode] = useState<TTxMode>("WRAP");
   const { ethBalance, wethBalance, isLoading, isError } = useCustomBalance();
+  console.log("OUTCOME OF BALANCE FETCH: ", isError);
 
   return (
     <div className="app flex items-center justify-center md:w-[50vw] max-w-5xl mx-auto h-[100vh] py-5 md:py-0 md:h-[70vh] outline-none border-none bg-transparent ">
@@ -72,7 +73,10 @@ function App() {
 
               {isConnected ? (
                 // connected wallet interface
-                <ConnectedWalletWrapper txMode={txMode} />
+                <ConnectedWalletWrapper
+                  txMode={txMode}
+                  isErrorFetchingBal={isError}
+                />
               ) : (
                 <div className="py-2 flex items-center justify-center ">
                   <h4 className="text-lg md:text-xl font-bold">

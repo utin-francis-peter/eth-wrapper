@@ -9,9 +9,13 @@ import useCustomGas from "../hooks/useCustomGas";
 type TProp = {
   children?: ReactElement;
   txMode: TTxMode;
+  isErrorFetchingBal: boolean;
 };
 
-const ConnectedWalletWrapper = ({ txMode }: TProp) => {
+const ConnectedWalletWrapper = ({
+  txMode,
+  isErrorFetchingBal = false,
+}: TProp) => {
   const [txAmount, setTxAmount] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [canFetchGas, setCanFetchGas] = useState(false);
@@ -91,6 +95,8 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
     }
   };
 
+  console.log(isErrorFetchingBal);
+
   return (
     <form
       onSubmit={handleTxSubmission}
@@ -110,7 +116,8 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
           required
         />
         <input
-          className="px-3 py-2 cursor-pointer border-b border-b-white rounded-xl"
+          className="px-3 py-2 cursor-pointer disabled:cursor-not-allowed disabled:border-b-red-400 disabled:text-red-400 border-b border-b-white rounded-xl"
+          disabled={isErrorFetchingBal}
           type="button"
           value="Set max"
           onClick={() => {
@@ -134,9 +141,9 @@ const ConnectedWalletWrapper = ({ txMode }: TProp) => {
 
       <button
         className={`w-full self-stretch  disabled:cursor-not-allowed rounded-[40px] py-[13px]  text-lg md:my-1`}
-        disabled={!!errorMessage}
+        disabled={!!errorMessage || isErrorFetchingBal}
         style={
-          !!errorMessage
+          !!errorMessage || isErrorFetchingBal
             ? { background: "rgba(236, 102, 255, 0.1)" }
             : { background: "rgba(236, 102, 255, 0.6)" }
         }
