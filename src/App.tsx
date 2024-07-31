@@ -18,7 +18,7 @@ function App() {
     <div className="app flex items-center justify-center md:w-[50vw] max-w-5xl mx-auto h-[100vh] py-5 md:py-0 md:h-[70vh] outline-none border-none bg-transparent ">
       <div className="h-full md:h-[400px] flex gap-5 flex-col justify-between md:w-[90%]  ">
         <header className="flex justify-between items-center ">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {isConnected && (
               <h2
                 className={`text-gray-800 shadow-lg px-4 py-1 rounded-md  flex items-center gap-1 ${
