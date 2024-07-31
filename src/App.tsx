@@ -21,10 +21,12 @@ function App() {
           <div className="flex items-center gap-2">
             {isConnected && (
               <h2
-                className={`text-gray-800 shadow-lg px-4 py-1 rounded-md bg-white  flex items-center gap-1`}
-                style={
-                  isError ? { background: "rgba(236, 102, 255, 0.1)" } : {}
-                }
+                className={`text-gray-800 shadow-lg px-4 py-1 rounded-md  flex items-center gap-1 ${
+                  isError ? "bg-transparent" : "bg-white"
+                }`}
+                // style={
+                //   isError ? { background: "rgba(236, 102, 255, 0.1)" } : {}
+                // }
               >
                 <span className={isError || isLoading ? "hidden" : "block"}>
                   {txMode === "WRAP" ? "SEP" : "WSEP"} Bal:
@@ -41,7 +43,7 @@ function App() {
               </h2>
             )}
 
-            {isError && <RetryBalFetch />}
+            {isConnected && isError && <RetryBalFetch />}
           </div>
 
           <div className={`${!isConnected ? "border" : ""} rounded-md`}>

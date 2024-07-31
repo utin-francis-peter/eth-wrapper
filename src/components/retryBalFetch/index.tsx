@@ -7,7 +7,7 @@ const RetryBalFetch = () => {
         <FaRev fontSize={25} />
       </button>
 
-      <div className="alarm w-[8px] h-[8px] bg-red-500 rounded-[100%] absolute left-1/2 top-1/2 -translate-x-[40%] -translate-y-[30%]"></div>
+      <div className="alarm w-[10px] h-[10px] bg-red-700 rounded-[100%] absolute left-1/2 top-1/2 -translate-x-[50%] -translate-y-[45%]"></div>
     </div>
   );
 };
