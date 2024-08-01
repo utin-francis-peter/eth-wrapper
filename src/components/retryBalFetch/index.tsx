@@ -1,3 +1,4 @@
+import { UseQueryResult } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { FaRev } from "react-icons/fa";
 
@@ -8,7 +9,11 @@ type TCursorPosition = {
   left: number;
 };
 
-const RetryBalFetch = () => {
+const RetryBalFetch = ({
+  handleBalanceRefetch,
+}: {
+  handleBalanceRefetch: () => Promise<UseQueryResult>;
+}) => {
   const [cursorPosition, setCursorPosition] = useState<TCursorPosition>({
     top: 0,
     right: 0,
@@ -61,7 +66,7 @@ const RetryBalFetch = () => {
       ref={hoverRef}
     >
       {/* this btn triggers increment in retryCount */}
-      <button className="">
+      <button onClick={handleBalanceRefetch}>
         <FaRev fontSize={25} />
 
         <div className="alarm w-[10px] h-[10px] bg-red-700 rounded-[100%] absolute left-1/2 top-1/2 -translate-x-[50%] -translate-y-[45%]"></div>

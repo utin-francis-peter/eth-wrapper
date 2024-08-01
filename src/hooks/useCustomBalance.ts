@@ -13,6 +13,7 @@ const useCustomBalance = () => {
     data: _ethBalance,
     isLoading: ethBalanceIsLoading,
     isError: isErrorLoadingEthBalance,
+    refetch,
   } = useBalance({
     address,
   });
@@ -55,6 +56,7 @@ const useCustomBalance = () => {
     wethBalance,
     isLoading: ethBalanceIsLoading || wethBalanceIsLoading,
     isError: isErrorLoadingEthBalance || isErrorLoadingWethBalance,
+    refetch,
   };
 };
 
