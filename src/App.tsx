@@ -8,19 +8,13 @@ import RetryBalFetch from "./components/retryBalFetch";
 
 export type TTxMode = "WRAP" | "UNWRAP";
 
+// TODO: there seem to be unnecessary prop-drilling of custom hook states and functions
 function App() {
   const { isConnected } = useAccount();
   const [txMode, setTxMode] = useState<TTxMode>("WRAP");
-  const { ethBalance, wethBalance, isLoading, isError, refetch } =
-    useCustomBalance();
-  // console.log("OUTCOME OF BALANCE FETCH: ", isError);
+  const { ethBalance, wethBalance, isLoading, isError } = useCustomBalance();
 
-  const handleBalanceRefetch = async () => {
-    const payload = await refetch({ throwOnError: true });
-    console.log("BALANCE REFETCH PAYLOAD: ", payload);
-
-    return payload;
-  };
+  console.log("ethBalanceFetchFailed in App ", isError);
 
   return (
     <div className="app flex items-center justify-center md:w-[50vw] max-w-5xl mx-auto h-[100vh] py-5 md:py-0 md:h-[70vh] outline-none border-none bg-transparent ">
@@ -51,9 +45,7 @@ function App() {
               </h2>
             )}
 
-            {isConnected && isError && (
-              <RetryBalFetch handleBalanceRefetch={handleBalanceRefetch} />
-            )}
+            {isConnected && isError && <RetryBalFetch />}
           </div>
 
           <div className={`${!isConnected ? "border" : ""} rounded-md`}>
@@ -87,10 +79,7 @@ function App() {
 
               {isConnected ? (
                 // connected wallet interface
-                <ConnectedWalletWrapper
-                  txMode={txMode}
-                  isErrorFetchingBal={isError}
-                />
+                <ConnectedWalletWrapper txMode={txMode} />
               ) : (
                 <div className="py-2 flex items-center justify-center ">
                   <h4 className="text-lg md:text-xl font-bold">
