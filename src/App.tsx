@@ -8,17 +8,19 @@ import RetryBalFetch from "./components/retryBalFetch";
 
 export type TTxMode = "WRAP" | "UNWRAP";
 
+// TODO: there seem to be unnecessary prop-drilling of custom hook states and functions
 function App() {
   const { isConnected } = useAccount();
   const [txMode, setTxMode] = useState<TTxMode>("WRAP");
   const { ethBalance, wethBalance, isLoading, isError } = useCustomBalance();
-  // console.log("OUTCOME OF BALANCE FETCH: ", isError);
+
+  console.log("ethBalanceFetchFailed in App ", isError);
 
   return (
     <div className="app flex items-center justify-center md:w-[50vw] max-w-5xl mx-auto h-[100vh] py-5 md:py-0 md:h-[70vh] outline-none border-none bg-transparent ">
       <div className="h-full md:h-[400px] flex gap-5 flex-col justify-between md:w-[90%]  ">
         <header className="flex justify-between items-center ">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {isConnected && (
               <h2
                 className={`text-gray-800 shadow-lg px-4 py-1 rounded-md  flex items-center gap-1 ${
@@ -77,10 +79,7 @@ function App() {
 
               {isConnected ? (
                 // connected wallet interface
-                <ConnectedWalletWrapper
-                  txMode={txMode}
-                  isErrorFetchingBal={isError}
-                />
+                <ConnectedWalletWrapper txMode={txMode} />
               ) : (
                 <div className="py-2 flex items-center justify-center ">
                   <h4 className="text-lg md:text-xl font-bold">

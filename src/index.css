@@ -13,7 +13,7 @@ body {
 
 .alarm {
   animation-name: alarm;
-  animation-delay: 1s;
+  /* animation-delay: 1s; */
   animation-duration: 1s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
