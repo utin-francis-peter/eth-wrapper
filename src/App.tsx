@@ -52,7 +52,7 @@ function App() {
         </header>
 
         <main className="flex-1 flex flex-col justify-between md:justify-normal gap-5 ">
-          <div className="md:border shadow-lg rounded-lg md:flex-1 flex flex-col md:w-[90%] mx-auto h-[90%] md:h-auto p-3">
+          <div className="md:border rounded-lg md:flex-1 flex flex-col md:w-[90%] mx-auto h-[90%] md:h-auto p-3">
             <div className="flex-1 flex flex-col items-center justify-center gap-4 ">
               {isConnected && (
                 <div className="flex justify-center gap-3">
