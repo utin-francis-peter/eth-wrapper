@@ -25,7 +25,6 @@ body {
   animation-iteration-count: infinite;
 }
 
-/* glowing bg implementation */
 .app {
   position: relative;
   padding: 2rem;
@@ -38,9 +37,7 @@ body {
   content: "";
   position: absolute;
   inset: -0.4rem;
-  /* border: 2px solid blue; */
   border-radius: inherit;
-  /* background-color: rgba(236, 102, 255, 0.8); */
   background: conic-gradient(
     from var(--gradient-angle),
     rgba(236, 102, 255, 0.8),
@@ -61,23 +58,11 @@ body {
 @media screen and (min-width: 768px) {
   .app {
     border-radius: 40px;
-    background: rgba(
-      34,
-      34,
-      44,
-      0.8
-    ); /* Slightly darker background for contrast */
+    background: rgba(34, 34, 44, 0.8);
     box-shadow: 0 15px 30px -10px rgba(236, 102, 255, 0.8),
-      0 10px 20px -15px rgba(67, 230, 252, 0.7); /* Dual shadow with complementary colors */
+      0 10px 20px -15px rgba(67, 230, 252, 0.7);
   }
 }
-
-/* @media screen and (min-width: 768px) {
-  .app {
-    border-radius: 40px;
-    background: rgba(34, 34, 44, 0.6);
-  }
-} */
 
 @keyframes rotation {
   0% {
@@ -93,10 +78,6 @@ body {
   0% {
     opacity: 1;
   }
-
-  /* 50%{
-    opacity: 0.5;
-  } */
 
   100% {
     opacity: 0;
