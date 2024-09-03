@@ -11,6 +11,12 @@ body {
   background: rgba(23, 23, 33);
 }
 
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 .alarm {
   animation-name: alarm;
   animation-delay: 1s;
@@ -19,11 +25,52 @@ body {
   animation-iteration-count: infinite;
 }
 
+.app {
+  position: relative;
+  padding: 2rem;
+  background: rgba(34, 34, 44, 0.6);
+  border-radius: 20px;
+}
+
+.app::before,
+.app::after {
+  content: "";
+  position: absolute;
+  inset: -0.4rem;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--gradient-angle),
+    rgba(236, 102, 255, 0.8),
+    rgba(67, 230, 252, 0.7),
+    rgba(236, 102, 255, 0.8),
+    rgba(255, 158, 189, 0.7),
+    rgba(236, 102, 255, 0.8)
+  );
+  animation: rotation 8s linear infinite;
+  z-index: -1;
+}
+
+.app::after {
+  filter: blur(3rem);
+  opacity: 0.75;
+}
+
 @media screen and (min-width: 768px) {
   .app {
     border-radius: 40px;
-    box-shadow: 0 25px 50px -12px rgba(236, 102, 255, 0.8);
-    background: rgba(34, 34, 44, 0.6);
+    background: rgba(34, 34, 44, 0.8);
+    box-shadow: 0 15px 30px -10px rgba(236, 102, 255, 0.8),
+      0 10px 20px -15px rgba(67, 230, 252, 0.7);
+  }
+}
+
+@keyframes rotation {
+  0% {
+    --gradient-angle: 0deg;
+  }
+
+  100% {
+    --gradient-angle: 360deg;
   }
 }
 
@@ -31,10 +78,6 @@ body {
   0% {
     opacity: 1;
   }
-
-  /* 50%{
-    opacity: 0.5;
-  } */
 
   100% {
     opacity: 0;
