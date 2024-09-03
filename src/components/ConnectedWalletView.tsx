@@ -95,8 +95,6 @@ const ConnectedWalletWrapper = ({
     }
   };
 
-  console.log(isErrorFetchingBal);
-
   return (
     <form
       onSubmit={handleTxSubmission}

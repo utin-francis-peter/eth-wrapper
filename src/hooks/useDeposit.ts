@@ -2,12 +2,13 @@ import { useWriteContract, useAccount } from "wagmi";
 import ABI from "../contracts/weth/ABI.json";
 import { addresses } from "../contracts/weth/addresses";
 import { parseEther } from "viem";
+import { toast } from "sonner";
 
 export type TProp = {
   txAmount: string;
 };
 const useDeposit = () => {
-  const { writeContract, data, error, status } = useWriteContract();
+  const { writeContract, status } = useWriteContract();
   const { address: walletAddress } = useAccount();
 
   const contractAddress = addresses.sepolia;
@@ -28,18 +29,15 @@ const useDeposit = () => {
       },
       {
         onSuccess: (data) => {
-          console.log("CONTRACT DATA:, ", data);
+          console.log("TX SUCCESSFUL: ", data);
+          // TODO: figure out how to insert a jsx into the toast => so clicking on the link redirects user to the tx block in explorer!
         },
 
         onError: (data, err) => {
-          console.log("ERROR, CONTRACT DATA:, ", data);
-          console.log("ERROR, CONTRACT ERR:, ", err);
+          console.log("TX FAILED: ", err, data);
         },
       }
     );
-
-    data && console.log("CONTRACT DATA: ", data);
-    error && console.log("CONTRACT ERROR: ", error);
   };
 
   return { _writeContract, status };
