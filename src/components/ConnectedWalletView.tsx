@@ -9,18 +9,18 @@ import useCustomGas from "../hooks/useCustomGas";
 type TProp = {
   children?: ReactElement;
   txMode: TTxMode;
-  isErrorFetchingBal: boolean;
 };
 
-const ConnectedWalletWrapper = ({
-  txMode,
-  isErrorFetchingBal = false,
-}: TProp) => {
+const ConnectedWalletWrapper = ({ txMode }: TProp) => {
   const [txAmount, setTxAmount] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [canFetchGas, setCanFetchGas] = useState(false);
 
-  const { ethBalance, wethBalance } = useCustomBalance();
+  const {
+    ethBalance,
+    wethBalance,
+    isError: isErrorFetchingBal,
+  } = useCustomBalance();
 
   const { _writeContract: _writeDepositContract, status: depositStatus } =
     useDeposit();
@@ -95,7 +95,10 @@ const ConnectedWalletWrapper = ({
     }
   };
 
-  console.log(isErrorFetchingBal);
+  console.log(
+    "ethBalanceFetchFailed in connectedWalletView ",
+    isErrorFetchingBal
+  );
 
   return (
     <form

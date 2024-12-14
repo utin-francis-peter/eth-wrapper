@@ -13,6 +13,7 @@ const useCustomBalance = () => {
     data: _ethBalance,
     isLoading: ethBalanceIsLoading,
     isError: isErrorLoadingEthBalance,
+    refetch,
   } = useBalance({
     address,
   });
@@ -31,7 +32,13 @@ const useCustomBalance = () => {
   });
 
   const [ethBalance, setEthBalance] = useState("0");
+  const [ethBalanceFetchFailed, setEthBalanceFetchFailed] = useState(false);
   const [wethBalance, setWethBalance] = useState("0");
+
+  console.log(
+    "ethBalanceFetchFailed in useCustomBalance ",
+    ethBalanceFetchFailed
+  );
 
   useEffect(() => {
     if (_ethBalance) {
@@ -50,11 +57,27 @@ const useCustomBalance = () => {
     }
   }, [_wethBalance]);
 
+  useEffect(() => {
+    if (isErrorLoadingEthBalance) {
+      setEthBalanceFetchFailed(true);
+    } else if (ethBalance) {
+      setEthBalanceFetchFailed(false);
+    }
+  }, [isErrorLoadingEthBalance, ethBalance]);
+  // TODO:  create a similar local state for managing weth balance fetch error state
+
+  const handleEthBalRefetch = async () => {
+    const payload = await refetch();
+    setEthBalance(payload.data?.formatted as string);
+    console.log("ETH balance after refetch: ", ethBalance);
+  };
+
   return {
     ethBalance,
     wethBalance,
     isLoading: ethBalanceIsLoading || wethBalanceIsLoading,
-    isError: isErrorLoadingEthBalance || isErrorLoadingWethBalance,
+    isError: ethBalanceFetchFailed || isErrorLoadingWethBalance,
+    handleEthBalRefetch,
   };
 };
 
